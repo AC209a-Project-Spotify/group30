@@ -1,5 +1,5 @@
-theme: jekyll-theme-leap-day
-title: Homepage
+theme: jekyll-theme-architect
+title: Spotify Homepage
 description: Predicting the success of your playlist
 baseurl:
 markdown: kramdown
