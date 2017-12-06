@@ -1,6 +1,5 @@
-theme: jekyll-theme-primer
 title: Project Spotify
-description: Keeping Italian Olives Pure!
+description: Predicting the success of your playlist
 baseurl:
 markdown: kramdown
 kramdown:
