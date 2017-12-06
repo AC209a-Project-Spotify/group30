@@ -1,5 +1,18 @@
+---
+nav_include: 1
+title: Data collection from the Spotify API
+notebook: Data_Collection.ipynb
+---
 
-# Data collection from the Spotify API
+## Contents
+{:.no_toc}
+*  
+{: toc}
+
+
+
+
+
 Here, we document our process to collect data from the Spotify API. 
 
 A brief overview of the steps: 
@@ -11,7 +24,7 @@ A brief overview of the steps:
     - Use random word generator to generate 50 random words
     - Combine the 2 lists and use get_playlists_by_search_word() to get playlists that match the search words
     - For each keyword, scrape 50 playlists on Spotify that match
- 
+
 - Store playlist sample with associated attributes in a json file. Attributes include:
     - Playlist ID
     - Owner ID
@@ -32,12 +45,12 @@ A brief overview of the steps:
     - Album ID
     - Album popularity
     - Audio features ('danceability', 'energy', 'key', 'loudness', 'mode', 'speechiness', 'acousticness',
-    'instrumentalness', 'liveness', 'valence', 'tempo', 'duration_ms', 'time_signature')
+      'instrumentalness', 'liveness', 'valence', 'tempo', 'duration_ms', 'time_signature')
     - Whether lyrics is explicit
     - Number of available markets
     - Popularity
 - Store all track information in a tracks.json file
-Note: A track is often associated with multiple artists
+  Note: A track is often associated with multiple artists
 
 ## Define helper functions
 These libraries and functions are used to scrape the Spotify API.
@@ -45,7 +58,6 @@ These libraries and functions are used to scrape the Spotify API.
 
 
 ```python
-# import libraries
 import json
 import os
 import sys
@@ -324,7 +336,6 @@ def get_tracks_by_track_ids(track_ids):
             
     return all_tracks  
 
-# initialize spotify authentication token
 sp = get_auth_spotipy()
 ```
 
@@ -337,7 +348,6 @@ Our 150 predefined search words are mostly inspired from https://insights.spotif
 
 
 ```python
-# Specify 150 predefined search words
 predefined = ['your', 'my', 'are', 'the', 'is', 'a', 'can', 'love', 'hate', 'holiday', 'work', 'workday',
               'weekend', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'beautiful',
               'fall', 'summer', 'spring', 'winter', 'classics',  'throwback', 'car', 'morning', 'shower', 'current', 
@@ -354,10 +364,8 @@ predefined = ['your', 'my', 'are', 'the', 'is', 'a', 'can', 'love', 'hate', 'hol
               'waltz', 'glow', 'crazy', 'women', 'men', 'vibes', 'wave', 'trip', 'crave', 'him', 'break', 
               'true', 'different', 'her']
 
-# Generate 200 search words combining 150 predefined and 50 random words
 search_words = generate_search_word(predefined=predefined, number=50)
 
-# Save search words (keywords) to json
 dump_data(search_words, '../data/200_search_words.json')
 ```
 
@@ -368,13 +376,10 @@ With these search words, we scrape the Spotify API for playlists that match thes
 
 
 ```python
-# Load keywords
 keywords = load_data('../data/200_search_words.json')
 
-# Scrape the Spotify API for playlists that match these keywords
 all_playlists = get_playlists_by_search_word(keywords)
 
-# Save playlists to json
 dump_data(all_playlists, '../data/playlists_from_200_search_words.json')
 ```
 
@@ -384,10 +389,8 @@ Next, we scrape the songs that are associated with these playlists. We only get 
 
 
 ```python
-# Load all playlists
 all_playlists = load_data('../data/playlists_from_200_search_words.json')
 
-# Scrape track information from Spotify in playlists
 tracks_2000 = get_tracks_in_playlists(all_playlists[:2000])
 tracks_4000 = get_tracks_in_playlists(all_playlists[2000:4000])
 tracks_6000 = get_tracks_in_playlists(all_playlists[4000:6000])
@@ -395,7 +398,6 @@ tracks_8000 = get_tracks_in_playlists(all_playlists[6000:8000])
 tracks_9000 = get_tracks_in_playlists(all_playlists[8000:9000])
 tracks_last = get_tracks_in_playlists(all_playlists[9000:])
 
-# Save track inforamtion to json
 dump_data(tracks_2000, '../data/tracks_2000.json')
 dump_data(tracks_4000, '../data/tracks_2000_4000.json')
 dump_data(tracks_6000, '../data/tracks_4000_6000.json')
@@ -410,7 +412,6 @@ After the first scrape, we checked to see if we have missing tracks in our datab
 
 
 ```python
-# Load all track databases
 tracks = {}
 tracks_2000 = load_data('../data_archive/tracks_2000.json')
 tracks_4000 = load_data('../data_archive/tracks_2000_4000.json')
@@ -419,7 +420,6 @@ tracks_8000 = load_data('../data_archive/tracks_6000_8000.json')
 tracks_9000 = load_data('../data_archive/tracks_8000_9000.json')
 tracks_last = load_data('../data_archive/tracks_9000.json')
 
-# Merge track dictionaries
 tracks.update(tracks_2000)
 tracks.update(tracks_4000)
 tracks.update(tracks_6000)
@@ -427,7 +427,6 @@ tracks.update(tracks_8000)
 tracks.update(tracks_9000)
 tracks.update(tracks_last)
 
-# Find missing tracks in the playlists
 missing_2000 = missing_tracks(tracks_2000, all_playlists[1000:2000])
 missing_4000 = missing_tracks(tracks_4000, all_playlists[2000:4000])
 missing_6000 = missing_tracks(tracks_6000, all_playlists[4000:6000])
@@ -435,7 +434,6 @@ missing_8000 = missing_tracks(tracks_8000, all_playlists[6000:8000])
 missing_9000 = missing_tracks(tracks_9000, all_playlists[8000:9000])
 missing_last = missing_tracks(tracks_last, all_playlists[9000:])
 
-# Re-scrape the API for the missing tracks
 missing_tracks_2000 = get_tracks_by_track_ids(missing_2000)
 missing_tracks_4000 = get_tracks_by_track_ids(missing_4000)
 missing_tracks_6000 = get_tracks_by_track_ids(missing_6000)
@@ -443,7 +441,6 @@ missing_tracks_8000 = get_tracks_by_track_ids(missing_8000)
 missing_tracks_9000 = get_tracks_by_track_ids(missing_9000)
 missing_tracks_last = get_tracks_by_track_ids(missing_last)
 
-# Merge re-scraped track dictionaries
 tracks.update(missing_tracks_2000)
 tracks.update(missing_tracks_4000)
 tracks.update(missing_tracks_6000)
@@ -451,7 +448,6 @@ tracks.update(missing_tracks_8000)
 tracks.update(missing_tracks_9000)
 tracks.update(missing_tracks_last)
 
-# Save the merged dictionaries as a single json file
 dump_data(tracks, '../data_archive/tracks.json')
 ```
 
