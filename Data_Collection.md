@@ -1,6 +1,6 @@
 ---
 nav_include: 1
-title: Data collection from the Spotify API
+title: Data collection
 notebook: Data_Collection.ipynb
 ---
 
