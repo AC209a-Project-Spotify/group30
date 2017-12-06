@@ -1,6 +1,6 @@
 ---
 nav_include: 1
-title: Data collection
+title: Data_Collection
 notebook: Data_Collection.ipynb
 ---
 
@@ -8,10 +8,6 @@ notebook: Data_Collection.ipynb
 {:.no_toc}
 *  
 {: toc}
-
-
-
-
 
 Here, we document our process to collect data from the Spotify API. 
 
@@ -24,7 +20,7 @@ A brief overview of the steps:
     - Use random word generator to generate 50 random words
     - Combine the 2 lists and use get_playlists_by_search_word() to get playlists that match the search words
     - For each keyword, scrape 50 playlists on Spotify that match
-
+ 
 - Store playlist sample with associated attributes in a json file. Attributes include:
     - Playlist ID
     - Owner ID
@@ -45,32 +41,23 @@ A brief overview of the steps:
     - Album ID
     - Album popularity
     - Audio features ('danceability', 'energy', 'key', 'loudness', 'mode', 'speechiness', 'acousticness',
-      'instrumentalness', 'liveness', 'valence', 'tempo', 'duration_ms', 'time_signature')
+    'instrumentalness', 'liveness', 'valence', 'tempo', 'duration_ms', 'time_signature')
     - Whether lyrics is explicit
     - Number of available markets
     - Popularity
 - Store all track information in a tracks.json file
-  Note: A track is often associated with multiple artists
+Note: A track is often associated with multiple artists
 
 ## Define helper functions
 These libraries and functions are used to scrape the Spotify API.
 
 
 
+
+
+
+
 ```python
-import json
-import os
-import sys
-import time
-from copy import deepcopy
-from random_words import RandomWords
-import spotipy
-from spotipy.client import Spotify
-from spotipy.oauth2 import SpotifyClientCredentials
-import collections
-import numpy as np
-
-
 def get_auth_spotipy () -> Spotify:
     """
     Function that returns authorized Spotify client
@@ -474,10 +461,3 @@ missing_tracks(tracks_db, all_playlists)
 
 
 Note: While there are still 505 tracks missing, these are entries without track IDs. We will discard these entries in subsequent data preprocessing step. 
-
-
-
-```python
-
-```
-
