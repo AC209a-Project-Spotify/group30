@@ -1,3 +1,4 @@
+theme: jekyll-theme-architect
 title: Project Spotify
 description: Predicting the success of your playlist
 baseurl:
