@@ -1,6 +1,6 @@
 ---
 nav_include: 3
-title: Appendix: EDA
+title: EDA
 notebook: EDA.ipynb
 ---
 
