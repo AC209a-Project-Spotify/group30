@@ -72,7 +72,10 @@ header h2 {
   max-width: 100%;
 }
 
-
+footer{
+  display: block;
+  text-align: center;
+}
 footer p.repo-owner,
 footer p.repo-owner a {
   font-weight: bold;
