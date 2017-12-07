@@ -50,6 +50,14 @@ table.dataframe {
   border: 1px solid #ebebeb;
 }
 
+table.custom-table{
+  width: 100%;
+  display: table;
+  border: 1px solid #ebebeb;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
 th {
   text-align: center;
   font-weight: 500;
@@ -67,13 +75,7 @@ form {
 
 }
 
-table.recommendation-table{
-  width: 100%;
-  display: table;
-  border: 1px solid #ebebeb;
-  border-collapse: collapse;
-  border-spacing: 0;
-}
+
 
 /* LAYOUT STYLES */
 body {

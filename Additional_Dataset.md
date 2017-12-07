@@ -239,7 +239,7 @@ extra_df.head()
         vertical-align: top;
     }
 </style>
-<table border="1" class="dataframe">
+<table border="1" class="dataframe custom-table">
   <thead>
     <tr style="text-align: right;">
       <th></th>
