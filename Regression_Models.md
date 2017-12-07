@@ -35,6 +35,8 @@ For each set of features, do the following 2 steps:
 
 As shown in the **summary** part at the end of this notebook, **Random Forest Regressor is the best single model** and the stacked **Meta Linear Regression model is overall the best**. Comparing models with the 2 sets of features, both have overall comparable test accuracies. The interaction terms between genre and avg of numerical audio features slightly improved test accuracies for the **RidgeCV, LassoCV and weighted average meta model** but not for the other models. This suggests that some of the interaction terms are useful while others are not. Thus, the models fitted on main predictors and interaction terms are (to some extent) overfitted.
 
+**Note of the additional 209 method**: In addition to the regression models discussed in class, we implemented 2 unqiue meta regressors which combined the prediction results of all single models by either weighted averaging or fitting an additional linear regressor on the single models' prediction outputs. The meta linear regressor is proved to give the best performance among all models. 
+
 
 
 

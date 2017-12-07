@@ -15,7 +15,7 @@ notebook: Recommendation.ipynb
 - Get the user specified number of tracks: E.g. `N`
 - Get all tracks of this genre from the tracks database
 - Sort the filtered tracks based on `popularity`
-- Combinatorically generate (`N+2 choose N`) different playlists as the recommendation candidates
+- Combinatorially generate (`N+2 choose N`) different playlists as the recommendation candidates
 - Use our fitted regression model to predict the `num_followers` of each recommendation candidate
     - We used the **Meta Linear Regression** model **with main predictors and interaction terms** for recommendation here. This model has top test $R^2$ score among all our models.
 - Return the playlist that has the highest predicted value of `num_followers` as the final recommendation

@@ -7,6 +7,9 @@ title: Project Spotify
 *  
 {: toc}
 
+## Team
+AC209a Final Project Group 30: Michelle Ho, Yijun Shen, Boyuan Sun, Jiawen Tong
+
 ## Problem Statement & Motivation 
 
 One of the main goals of music streaming platforms like Spotify is to generate meaningful recommendations that might interest its users based on user-specified input or eventually collaborative filtering. This is an important task to retain and to gain active users. In order to do so, an approach is to recommend a collection of songs that is likely to be popular and followed by a large number of audience. In this way, we assume that a typical user is most likely to be interested in the recommended playlist if it has a high predicted number of followers. Therefore, the high-level goals of this Spotify project are:
@@ -18,6 +21,8 @@ One of the main goals of music streaming platforms like Spotify is to generate m
 Ability to give appealing recommendations is key to retaining/gaining active users and improving revenue for most online businesses. Music streaming platforms are no exception. Here, we aim to build a music recommender system using data from one of the biggest music streaming platforms, Spotify, which made its data publicly available through its API. The main challenges of this project include: 1) downloading data is a rate limiting step because there is a wealth of data; 2) it takes some time to get familiar with using the API and its associated python library, Spotipy; 3) data is noisy; 4) data requires substantial feature engineering.
 
 ### Description of data
+
+Data could be downloaded [here](https://drive.google.com/drive/folders/1LPETeTOLaUYCVstBU0WO4Fgc4ImvMkuP?usp=sharing).
 
 The data attributes we obtained from **Spotify API** is given below:
 
@@ -58,7 +63,7 @@ The data attributes we obtained from **Worldwide Daily Song Ranking** is given b
 ## Related Resources 
 To make more informed queries to the Spotify API, we consulted the following websites for trending playlist names: [Sportify trending playlist words 2015](https://insights.spotify.com/us/2015/12/18/trending-playlist-words-2015/), [DigitalTrends.com best Spotify playlists](https://www.digitaltrends.com/music/best-playlists-on-spotify/2/), and [gizmodo.com 25 most popular Spotify playlists](https://gizmodo.com/these-are-the-25-most-popular-spotify-playlists-510275721).
 
-We used the Spotipy python library as our tool to work with Spotify web API ([https://spotipy.readthedocs.io/en/latest/](https://spotipy.readthedocs.io/en/latest/)).
+We used the [Spotipy python library](https://spotipy.readthedocs.io/en/latest/)) as our tool to work with [Spotify web API](https://developer.spotify.com/web-api/).
 
 ## Modeling Approach
 Our approach is consisted of 5 stages: 1) data collection; 2) data preprocessing; 3) exploratory data analysis; 4) predictive model building; 5) recommender system inception.
@@ -92,6 +97,8 @@ Using our model building process depicted in the diagram below, we explored 16 d
   - **Meta regressor 1**: Average each single model's predicted value weighted by its accuracy on the validation set    
   - **Meta regressor 2**: Fit a linear regression model on the single models' predicted values on the validation set
     <p align="center"><img src="img/model_building_process.png" width="400"> </p>
+
+**Note of the additional 209 method**: In addition to the regression models discussed in class, we implemented 2 unqiue meta regressors which combined the prediction results of all single models by either weighted averaging or fitting an additional linear regressor on the single models' prediction outputs. The meta linear regressor is proved to give the best performance among all models. 
 
 ### Recommender system & validation
 

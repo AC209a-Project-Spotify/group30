@@ -1,6 +1,6 @@
 theme: jekyll-theme-architect
-title: Spotify Homepage
-description: Predicting the success of your playlist
+title: Spotify Group30
+description: Predicting the success of your playlist and providing smart personalised recommendations
 baseurl:
 markdown: kramdown
 kramdown:
