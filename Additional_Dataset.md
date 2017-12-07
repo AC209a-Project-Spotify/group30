@@ -361,7 +361,7 @@ playlists_df_extra.head()
 <div>
 <style>
     .dataframe thead tr:only-child th {
-        text-align: right;
+        text-align: center;
     }
 
     .dataframe thead th {
@@ -938,7 +938,7 @@ playlists_df_interaction.head()
 <div>
 <style>
     .dataframe thead tr:only-child th {
-        text-align: right;
+        text-align: center;
     }
 
     .dataframe thead th {
@@ -951,7 +951,7 @@ playlists_df_interaction.head()
 </style>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr style="text-align: center;">
       <th></th>
       <th>num_tracks</th>
       <th>track_acousticness_avg</th>
