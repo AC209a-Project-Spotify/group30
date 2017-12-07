@@ -330,7 +330,7 @@ sp = get_auth_spotipy()
 ## Define search queries (search words)
 To broadly and randomly sample playlists from the Spotify API, we combine 150 predefined words and 50 randomly generated words as our search words to query the API. 
 
-Our 150 predefined search words are mostly inspired from https://insights.spotify.com/us/2015/12/18/trending-playlist-words-2015/, https://www.digitaltrends.com/music/best-playlists-on-spotify/2/, and https://gizmodo.com/these-are-the-25-most-popular-spotify-playlists-510275721.
+Our 150 predefined search words are mostly inspired from [Sportify treding playlist words 2015](https://insights.spotify.com/us/2015/12/18/trending-playlist-words-2015/), [DigitalTrends.com best Spotify playlists](https://www.digitaltrends.com/music/best-playlists-on-spotify/2/), and [gizmodo.com 25 most popular Spotify playlists](https://gizmodo.com/these-are-the-25-most-popular-spotify-playlists-510275721).
 
 
 
