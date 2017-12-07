@@ -2,6 +2,11 @@
 title: Project Spotify
 ---
 
+## Contents
+{:.no_toc}
+*  
+{: toc}
+
 ## Problem Statement & Motivation 
 
 One of the main goals of music streaming platforms like Spotify is to generate meaningful recommendations that might interest its users based on user-specified input or eventually collaborative filtering. This is an important task to retain and to gain active users. In order to do so, an approach is to recommend a collection of songs that is likely to be popular and followed by a large number of audience. In this way, we assume that a typical user is most likely to be interested in the recommended playlist if it has a high predicted number of followers. Therefore, the high-level goals of this Spotify project are:
