@@ -28,7 +28,7 @@ notebook: Recommendation.ipynb
     - Low rank within genre indicates a **poor** recommendation
 
 **Summary of findings:**
-We found the performance of our recommender system varies significantly (i.e. the within genre ranking of the most similar playlist is fairly unstable) as shown in the 3 examples above. This variance could be due to 1) the model predicting the number of followers does not have sufficient predictive power or 2) our metric of similarity is not sufficient to actually find a very similar playlist in the existing pool of playlists. We suspect both reasons contributed to the variance in performance we observed. In the next section, we discuss some potential future directions to improve our recommender system performance.
+We found the performance of our recommender system varies significantly (i.e. the within genre ranking of the most similar playlist is fairly unstable) as shown in the 3 examples above. This variance could be due to 1) the model predicting the number of followers does not have sufficient predictive power or 2) our metric of similarity is not sufficient to actually find a very similar playlist in the existing pool of playlists. We suspect both reasons contributed to the variance in performance we observed.
 
 
 
@@ -355,11 +355,11 @@ rank = get_rank_within_genre(most_similar_pl_id, 'pop')
     .dataframe thead tr:only-child th {
         text-align: center;
     }
-
+    
     .dataframe thead th {
         text-align: left;
     }
-
+    
     .dataframe tbody tr th {
         vertical-align: top;
     }
@@ -441,11 +441,11 @@ rank = get_rank_within_genre(most_similar_pl_id, 'pop')
     .dataframe thead tr:only-child th {
         text-align: center;
     }
-
+    
     .dataframe thead th {
         text-align: left;
     }
-
+    
     .dataframe tbody tr th {
         vertical-align: top;
     }
@@ -551,11 +551,11 @@ rank = get_rank_within_genre(most_similar_pl_id, 'pop')
     .dataframe thead tr:only-child th {
         text-align: center;
     }
-
+    
     .dataframe thead th {
         text-align: left;
     }
-
+    
     .dataframe tbody tr th {
         vertical-align: top;
     }
@@ -673,11 +673,11 @@ rank = get_rank_within_genre(most_similar_pl_id, 'rock')
     .dataframe thead tr:only-child th {
         text-align: center;
     }
-
+    
     .dataframe thead th {
         text-align: left;
     }
-
+    
     .dataframe tbody tr th {
         vertical-align: top;
     }
@@ -759,11 +759,11 @@ rank = get_rank_within_genre(most_similar_pl_id, 'rock')
     .dataframe thead tr:only-child th {
         text-align: center;
     }
-
+    
     .dataframe thead th {
         text-align: left;
     }
-
+    
     .dataframe tbody tr th {
         vertical-align: top;
     }
@@ -869,11 +869,11 @@ rank = get_rank_within_genre(most_similar_pl_id, 'rock')
     .dataframe thead tr:only-child th {
         text-align: center;
     }
-
+    
     .dataframe thead th {
         text-align: left;
     }
-
+    
     .dataframe tbody tr th {
         vertical-align: top;
     }
@@ -991,11 +991,11 @@ rank = get_rank_within_genre(most_similar_pl_id, 'funk')
     .dataframe thead tr:only-child th {
         text-align: center;
     }
-
+    
     .dataframe thead th {
         text-align: left;
     }
-
+    
     .dataframe tbody tr th {
         vertical-align: top;
     }
