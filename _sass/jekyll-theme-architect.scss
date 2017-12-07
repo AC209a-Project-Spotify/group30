@@ -58,7 +58,7 @@ table.custom-table{
   border-spacing: 0;
 }
 
-.dataframe thead tr th{
+.dataframe thead tr:only-child th{
   text-align: center;
 }
 
