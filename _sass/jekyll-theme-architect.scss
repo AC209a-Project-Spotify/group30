@@ -38,7 +38,42 @@ nav a.active{
   background-color: #2879d0;
 }
 
+table {
+  width: 100%;
+  border: 1px solid #ebebeb;
+}
 
+table.dataframe {
+  display: block;
+  overflow: scroll;
+  width: 100%;
+  border: 1px solid #ebebeb;
+}
+
+th {
+  text-align: center;
+  font-weight: 500;
+}
+
+td {
+  font-weight: 300;
+  text-align: center;
+  border: 1px solid #ebebeb;
+}
+
+form {
+  padding: 20px;
+  background: #f2f2f2;
+
+}
+
+table.recommendation-table{
+  width: 100%;
+  display: table;
+  border: 1px solid #ebebeb;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
 
 /* LAYOUT STYLES */
 body {
@@ -200,42 +235,6 @@ hr {
   border-top: solid 1px #ddd;
 }
 
-table {
-  width: 100%;
-  border: 1px solid #ebebeb;
-}
-
-table.dataframe {
-  display: block;
-  overflow: scroll;
-  width: 100%;
-  border: 1px solid #ebebeb;
-}
-
-th {
-  text-align: center;
-  font-weight: 500;
-}
-
-td {
-  font-weight: 300;
-  text-align: center;
-  border: 1px solid #ebebeb;
-}
-
-form {
-  padding: 20px;
-  background: #f2f2f2;
-
-}
-
-table.recommendation-table{
-  width: 100%;
-  display: table;
-  border: 1px solid #ebebeb;
-  border-collapse: collapse;
-  border-spacing: 0;
-}
 
 /* GENERAL ELEMENT TYPE STYLES */
 
