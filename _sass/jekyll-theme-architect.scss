@@ -165,6 +165,12 @@ hr {
 table {
   width: 100%;
   border: 1px solid #ebebeb;
+}
+
+table.dataframe {
+  float: left;
+  width: 690px;
+  border: 1px solid #ebebeb;
   overflow: scroll;
 }
 
