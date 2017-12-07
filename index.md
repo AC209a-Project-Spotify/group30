@@ -69,9 +69,9 @@ The data attributes we obtained from **Spotify API** is given below:
 - Track ID
 
 ## Related Resources 
-To make more informed queries to the Spotify API, we consulted the following websites for trending playlist names:  https://insights.spotify.com/us/2015/12/18/trending-playlist-words-2015/, https://www.digitaltrends.com/music/best-playlists-on-spotify/2/, and https://gizmodo.com/these-are-the-25-most-popular-spotify-playlists-510275721.
+To make more informed queries to the Spotify API, we consulted the following websites for trending playlist names: [https://insights.spotify.com/us/2015/12/18/trending-playlist-words-2015/](https://insights.spotify.com/us/2015/12/18/trending-playlist-words-2015/), [https://www.digitaltrends.com/music/best-playlists-on-spotify/2/](https://www.digitaltrends.com/music/best-playlists-on-spotify/2/), and [ https://gizmodo.com/these-are-the-25-most-popular-spotify-playlists-510275721]( https://gizmodo.com/these-are-the-25-most-popular-spotify-playlists-510275721).
 
-We used the Spotipy python library as our tool to work with Spotify web API (https://spotipy.readthedocs.io/en/latest/). 
+We used the Spotipy python library as our tool to work with Spotify web API ([https://spotipy.readthedocs.io/en/latest/](https://spotipy.readthedocs.io/en/latest/)).
 
 ## Modeling Approach
 Our approach is consisted of 5 stages: 1) data collection; 2) data preprocessing; 3) exploratory data analysis; 4) predictive model building; 5) recommender system inception.
