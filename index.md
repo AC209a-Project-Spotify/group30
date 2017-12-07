@@ -56,7 +56,7 @@ The data attributes we obtained from **Worldwide Daily Song Ranking** is given b
 - Track ID
 
 ## Related Resources 
-To make more informed queries to the Spotify API, we consulted the following websites for trending playlist names: [Sportify treding playlist words 2015](https://insights.spotify.com/us/2015/12/18/trending-playlist-words-2015/), [DigitalTrends.com best Spotify playlists](https://www.digitaltrends.com/music/best-playlists-on-spotify/2/), and [gizmodo.com 25 most popular Spotify playlists](https://gizmodo.com/these-are-the-25-most-popular-spotify-playlists-510275721).
+To make more informed queries to the Spotify API, we consulted the following websites for trending playlist names: [Sportify trending playlist words 2015](https://insights.spotify.com/us/2015/12/18/trending-playlist-words-2015/), [DigitalTrends.com best Spotify playlists](https://www.digitaltrends.com/music/best-playlists-on-spotify/2/), and [gizmodo.com 25 most popular Spotify playlists](https://gizmodo.com/these-are-the-25-most-popular-spotify-playlists-510275721).
 
 We used the Spotipy python library as our tool to work with Spotify web API ([https://spotipy.readthedocs.io/en/latest/](https://spotipy.readthedocs.io/en/latest/)).
 
