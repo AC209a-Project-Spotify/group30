@@ -183,7 +183,7 @@ df.head()
 <div>
 <style>
     .dataframe thead tr:only-child th {
-        text-align: right;
+        text-align: center;
     }
 
     .dataframe thead th {
@@ -196,7 +196,7 @@ df.head()
 </style>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr style="text-align: center;">
       <th></th>
       <th>collaborative</th>
       <th>num_followers</th>
@@ -475,7 +475,7 @@ plot_distribution(df, unique_features, 1, 3, (24,6))
 #### Numeric predictors
 We classified numeric predictors into 2 different sets: 1) audio features and 2) other features including number of tracks, track popularity, artist popularity, number of available markets, etc., and we visualized them separately.
 
-** Distribution of Audio Features**
+**Distribution of Audio Features**
 
 
 
@@ -492,7 +492,7 @@ plot_distribution(df, audio_features, 4, 3, (24,18))
 ![png](EDA_files/EDA_19_0.png)
 
 
-** Distribution of other numeric features**
+**Distribution of other numeric features**
 
 
 
@@ -745,7 +745,7 @@ df_interaction.head()
 <div>
 <style>
     .dataframe thead tr:only-child th {
-        text-align: right;
+        text-align: center;
     }
 
     .dataframe thead th {
@@ -758,7 +758,7 @@ df_interaction.head()
 </style>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr style="text-align: center;">
       <th></th>
       <th>num_tracks</th>
       <th>track_acousticness_avg</th>

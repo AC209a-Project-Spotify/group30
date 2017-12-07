@@ -7,7 +7,7 @@ title: Project Spotify
 *  
 {: toc}
 
-## Team
+## Team Group30
 AC209a Final Project Group 30: Michelle Ho, Yijun Shen, Boyuan Sun, Jiawen Tong
 
 ## Problem Statement & Motivation 
@@ -68,12 +68,12 @@ We used the [Spotipy python library](https://spotipy.readthedocs.io/en/latest/) 
 ## Modeling Approach
 Our approach is consisted of 5 stages: 1) data collection; 2) data preprocessing; 3) exploratory data analysis; 4) predictive model building; 5) recommender system inception.
 ### Data collection
-To collect Spotify data, we used **150 predefined words** and **50 randomly generated words** to query the Spotify API and saved a list of over **9,000 playlists** with corresponding track IDs in `playlists.json`. Using the set of track IDs in our playlists, we scraped the Spotify API again to extract tracks, and we stored a dictionary of around **400,000 tracks** with track IDs as keys and track related attributes as values (e.g, popularity, album name, danceability, and etc.). This dictionary is then saved as `tracks.json`. These two `.json` files, `playlists.json` and `tracks.json`, serve as our databases. 
+To collect Spotify data, we used **150 predefined words** and **50 randomly generated words** to query the Spotify API and saved a list of over **9,000 playlists** with corresponding track IDs in `playlists.json`. Using the set of track IDs in our playlists, we scraped the Spotify API again to extract tracks, and we stored a dictionary of around **270,000 tracks** with track IDs as keys and track related attributes as values (e.g, popularity, album name, danceability, and etc.). This dictionary is then saved as `tracks.json`. These two `.json` files, `playlists.json` and `tracks.json`, serve as our [databases](https://drive.google.com/drive/folders/1LPETeTOLaUYCVstBU0WO4Fgc4ImvMkuP?usp=sharing). 
 
 For the additional dataset, we downloaded form Kaggle - [200 daily most streamed Spotify songs](https://www.kaggle.com/edumucelli/spotifys-worldwide-daily-song-ranking).
 
 ### Data preprocessing
-For Spotify data, we first extracted track features for each playlist and performed feature engineering to build a dataframe, in which a row is a playlist and a column is an associated feature. For each playlist, there are playlist-level features, and track-level features. We chose to calculate the **average and standard deviation**, and for track-level categorical variables, we chose to take the **mode and count the number of unique** occurrences. Since Spotify playlists/tracks are not directly labeled with genre, we defined the **genre of a playlist** to be the most frequently occurring artist genre among all its tracks. We later realized that Spotify defined over 2000 genres, and many of them share similar names. Therefore, we decided to narrow down to 27 genres by string matching. 
+For Spotify data, we first extracted track features for each playlist and performed feature engineering to build a dataframe, in which a row is a playlist and a column is an associated feature. For each playlist, there are playlist-level features, and track-level features. We chose to calculate the **average and standard deviation**, and for track-level categorical variables, we chose to take the **mode and count the number of unique** occurrences. Since Spotify playlists/tracks are not directly labeled with genre, we defined the **genre of a playlist** to be the most frequently occurring artist genre among all its tracks. We later realized that **Spotify defined over 2000 genres**, and many of them share similar names. Therefore, we decided to narrow down to **27 genres** by string matching. 
 
 For the additional dataset, we engineered an additional field, **`score`** based on the rank of a song each time it made the top 200 most streamed list worldwide. Our definition is **`Score`** = (201 - rank_1) + … + (201 - rank_N), where N is the number of times the song made the top 200 list. We then appended the ranking scores to Spotify playlist dataframe by matching track IDs. 
 
@@ -102,7 +102,7 @@ Using our model building process depicted in the diagram below, we explored 16 d
 
 ### Recommender system & validation
 
-Our recommender system allows the user to input the desired genre and length of playlist (i.e. number of tracks). Based on these inputs, we obtain all tracks belonging to the specified genre from our tracks database. To further limit our search space for shortening the time to generate a recommendation, our recommender system only considers the top N+2 most popular tracks, where N is the number of desired tracks in the playlist. The recommender system then combinatorially generates **N+5 choose N** different playlists as recommendation candidates. Running these candidates through our predictive model, we obtain a predicted number of followers for each candidate. The recommender system finally recommends the playlist with the highest predicted number of followers. 
+Our recommender system allows the user to input the desired genre and length of playlist (i.e. number of tracks). Based on these inputs, we obtain all tracks belonging to the specified genre from our tracks database. To further limit our search space for shortening the time to generate a recommendation, our recommender system only considers the top **N+2** most popular tracks, where N is the number of desired tracks in the playlist. The recommender system then combinatorially generates **N+2 choose N** different playlists as recommendation candidates. Running these candidates through our predictive model, we obtain a predicted number of followers for each candidate. The recommender system finally recommends the playlist with the highest predicted number of followers. 
 
 See diagram below for our workflow.
 
