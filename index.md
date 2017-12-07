@@ -118,7 +118,7 @@ See diagram below for our workflow.
 
 To validate our recommendation, our strategy is to find the **most similar** playlist within the user-specified genre from the playlists database. We define **Similarity** as  
 
-set(tracks in recommended playlist)  $ \quad \cap \quad $  set(tracks in existing within-genre playlist)
+$$ \text{set(tracks in recommended playlist)}   \cap \text{ set(tracks in existing within-genre playlist)}$$
 
 The ranking of this most similar playlist within its genre based on its number of followers is an indication of how good our recommendation is.
 
