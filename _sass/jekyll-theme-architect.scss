@@ -163,6 +163,11 @@ hr {
 }
 
 table {
+  width: 100%;
+  border: 1px solid #ebebeb;
+}
+
+table.dataframe {
   display: block;
   overflow: scroll;
   width: 100%;
@@ -170,6 +175,7 @@ table {
 }
 
 th {
+  text-align: center;
   font-weight: 500;
 }
 
