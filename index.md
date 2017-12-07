@@ -17,7 +17,7 @@ One of the main goals of music streaming platforms like Spotify is to generate m
 ## Introduction & Description of Data
 Ability to give appealing recommendations is key to retaining/gaining active users and improving revenue for most online businesses. Music streaming platforms are no exception. Here, we aim to build a music recommender system using data from one of the biggest music streaming platforms, Spotify, which made its data publicly available through its API. The main challenges of this project include: 1) downloading data is a rate limiting step because there is a wealth of data; 2) it takes some time to get familiar with using the API and its associated python library, Spotipy; 3) data is noisy; 4) data requires substantial feature engineering.
 
-### Description of Data
+### Description of data
 
 The data attributes we obtained from **Spotify API** is given below:
 
@@ -116,7 +116,11 @@ See diagram below for our workflow.
 
 
 
-To validate our recommendation, our strategy is to find the **most similar** playlist within the user-specified genre from the playlists database. We define **Similarity** as  || set(tracks in recommended playlist)  $ \quad \cap \quad $  set(tracks in existing within-genre playlist) ||. The ranking of this most similar playlist within its genre based on its number of followers is an indication of how good our recommendation is.
+To validate our recommendation, our strategy is to find the **most similar** playlist within the user-specified genre from the playlists database. We define **Similarity** as  
+
+set(tracks in recommended playlist)  $ \quad \cap \quad $  set(tracks in existing within-genre playlist)
+
+The ranking of this most similar playlist within its genre based on its number of followers is an indication of how good our recommendation is.
 
 
 
@@ -135,7 +139,7 @@ Out of all the **single models**, **Random Forest Regressor** performed the best
 | Meta - Weighted Avg      | 0.41066   | 0.41578            |
 | Meta - Linear Regression | 0.49653   | 0.49444            |
 
-### Predictive Model with Additional Dataset
+### Predictive model with additional dataset
 
 - Incorporating the additional dataset **improved** test $R^2$ scores of **Linear Regression model, RidgeCV, LassoCV** on both sets of features.     
 
