@@ -99,10 +99,21 @@ Using our model building process depicted in the diagram below, we explored 16 d
 - Training meta-models by **Stacking** all fitted models on the training set together to fit a    
   - **Meta regressor 1**: Average each single model's predicted value weighted by its accuracy on the validation set    
   - **Meta regressor 2**: Fit a linear regression model on the single models' predicted values on the validation set
+<img src="img/model_building_process.png" width="400">
+
 ### Recommender system & validation
+
 Our recommender system allows the user to input the desired genre and length of playlist (i.e. number of tracks). Based on these inputs, we obtain all tracks belonging to the specified genre from our tracks database. To further limit our search space for shortening the time to generate a recommendation, our recommender system only considers the top N+2 most popular tracks, where N is the number of desired tracks in the playlist. The recommender system then combinatorially generates **N+5 choose N** different playlists as recommendation candidates. Running these candidates through our predictive model, we obtain a predicted number of followers for each candidate. The recommender system finally recommends the playlist with the highest predicted number of followers. 
 
+See diagram below for our workflow.
+
+<img src="img/recommendation_process.png" width="400">
+
+
+
 To validate our recommendation, our strategy is to find the **most similar** playlist within the user-specified genre from the playlists database. We define **Similarity** as  || set(tracks in recommended playlist)  $ \quad \cap \quad $  set(tracks in existing within-genre playlist) ||. The ranking of this most similar playlist within its genre based on its number of followers is an indication of how good our recommendation is.
+
+
 
 ## Results
 ### Predictive model 
