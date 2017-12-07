@@ -168,16 +168,10 @@ table {
 }
 
 table.dataframe {
-  float: left;
-  width: 690px;
-  table-layout:fixed;
+  display: block;
+  width: 100%;
+  overflow: auto;
   border: 1px solid #ebebeb;
-  overflow: scroll;
-}
-
-table.dataframe tr {
-   overflow: scroll;
-   white-space: nowrap;
 }
 
 th {
