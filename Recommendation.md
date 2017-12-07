@@ -10,27 +10,31 @@ notebook: Recommendation.ipynb
 {: toc}
 
 
-## Steps of recommendation:
+**Steps of recommendation:**
 - Get the user specified genre: E.g. `pop`
 - Get the user specified number of tracks: E.g. `N`
 - Get all tracks of this genre from the tracks database
 - Sort the filtered tracks based on `popularity`
-- Combinatorically generate **`N+2 choose N`** different playlists as the recommendation candidates
+- Combinatorically generate (`N+2 choose N`) different playlists as the recommendation candidates
 - Use our fitted regression model to predict the `num_followers` of each recommendation candidate
     - We used the **Meta Linear Regression** model **with main predictors and interaction terms** for recommendation here. This model has top test $R^2$ score among all our models.
 - Return the playlist that has the highest predicted value of `num_followers` as the final recommendation
 
-## Strategy of validating the recommendation:
-- Find the **most similar** playlist from the playlists database
+**Strategy of validating the recommendation:**
+- Find the **most similar** playlist with the **same genre as the user specified one** from the playlists database
     - **Definition of Similairy:** || set(recommended_playlist_tracks)  $ \quad \cap \quad $  set(existing_playlist_tracks) ||
-- Compare the predicted `num_followers` of the recommendation playlist and its most similar playlist
+- See the actual ranking of the most similar playlist within the user specified genre 
+    - High rank within genre indicates a **good** recommendation
+    - Low rank within genre indicates a **poor** recommendation
 
-## Summary of findings: 
+**Summary of findings:**
 We find that the meta linear regression model has a good validation result when the user specified genre is `pop`, the genre that most playlists are associated with. The validation result would be off when the user specified genre is a genre that does not often appear in the playlists. This suggests that future work to improve recommendation is to gather balanced number of playlists/tracks among all genres.
 
 
 
 
+
+## Define helper functions to access the database
 
 
 
@@ -128,6 +132,8 @@ def load_data(file):
 ```
 
 
+## Load Data
+
 
 
 ```python
@@ -140,6 +146,8 @@ X_train_main = pd.read_csv('../../data/X_train_main.csv', index_col = 0)
 X_train_int = pd.read_csv('../../data/X_train_int.csv', index_col = 0)
 ```
 
+
+## Functions to make a recommendation
 
 
 
@@ -217,7 +225,7 @@ def preprocess_playlist_candidates(candidates_playlists_df):
     return df_recommendation_int
     
     
-def recommended_playlist(genre, num_tracks=30):
+def recommended_playlist(genre, num_tracks):
     gen_playlists_df, playlist_track_ids = generate_playlists(genre, num_tracks)
     df_recommendation_int = preprocess_playlist_candidates(gen_playlists_df)
     
@@ -243,6 +251,7 @@ def recommended_playlist(genre, num_tracks=30):
     
     print('The recommended playlist is:')
     display(display_recommendation_df)
+    print('Predicted num_followers: {}'.format(recommendation_playlist_pred_num_followers))
     return recommendation_playlist, recommendation_playlist_pred_num_followers
 
 def get_recommendation_tracks_display_info(recommendation):
@@ -251,22 +260,44 @@ def get_recommendation_tracks_display_info(recommendation):
     for track_id in recommend_track_ids:
         display_info = {}
         track_info = tracks_db[track_id]
+        display_info['track ID'] = track_id
         display_info['track name'] = track_info['name']
         display_info['artists names'] = track_info['artists_names']
         display_info_list.append(display_info)
     return pd.DataFrame(display_info_list)
+```
 
-def validate_recommendation_playlist(recommendation_playlist, recommendation_playlist_pred_num_followers):
-    # go through the playlist db to find the most similar existing playlist to our recommendation
+
+## Functions to validate the recommendation
+
+
+
+```python
+def get_most_similar_playlist(recommendation, genre):
+    '''
+    Retrun the playlist id in the playlists database that is the most similar to the recommended playlist
+    '''
     dissimilarity_list = []
     for playlist in playlists_db:
-        dissimilarity_list.append(len(set(recommendation_playlist['track_ids']) - set(playlist['track_ids'])))
-    
-    print('min # different tracks: {}'.format(min(dissimilarity_list)))
+        cur_pl = playlists_df[playlists_df['id'] == playlist['id']]
+        if not cur_pl.empty:
+            cur_genre = cur_pl['genre'].values[0]
+            if cur_genre == genre:
+                dissimilarity_list.append(len(set(recommendation['track_ids']) - set(playlist['track_ids'])))
+            else: # dissimilarity = inf if the playlist's genre is different from the user specified genre
+                dissimilarity_list.append(float('inf'))
+        else:
+            dissimilarity_list.append(float('inf'))
+
     most_similar_playlist_id = playlists_db[dissimilarity_list.index(min(dissimilarity_list))]['id']
     most_similar_playlist = playlists_df[playlists_df['id'] == most_similar_playlist_id]
     most_similar_playlist_num_followers = most_similar_playlist['num_followers'].values[0]
+    return most_similar_playlist_id
+
+def predict_most_similar_playlist(most_similar_playlist_id):
+    most_similar_playlist = playlists_df[playlists_df['id'] == most_similar_playlist_id]
     
+    # Process the most similar playlist to be ready for model prediction
     processed_most_similar_playlist = preprocess_playlist_candidates(most_similar_playlist)
     
     # Load meta model
@@ -284,18 +315,34 @@ def validate_recommendation_playlist(recommendation_playlist, recommendation_pla
 
     most_similar_predicted_log_num_followers = meta_model.predict(meta_X_processed_most_similar_playlist)
     most_similar_predicted_num_followers = (np.exp(most_similar_predicted_log_num_followers) - 1)[0]
+    print('The most similar playlist\'s predicted num_followers: {}'.format(most_similar_predicted_num_followers))
 
-    print('\nPredicted num_followers: {}'.format(recommendation_playlist_pred_num_followers))
-    print('The most similar playlist\'s num_followers: {}'.format(most_similar_predicted_num_followers))
+def get_rank_within_genre(playlist_id, genre):
+    n_genre = len(playlists_df[playlists_df['genre']==genre])
+    print('There are {} playlists in genre = {}'.format(n_genre, genre))
+    
+    df = deepcopy(playlists_df[playlists_df['genre']==genre])
+    df.sort_values(by=['num_followers'], ascending=False, inplace=True)
+    
+    # Get the within-genre-rank of the playlist in the database
+    df.reset_index(inplace=True)
+    rank = df[df['id'] == playlist_id].index.values[0] + 1
+    print('The most similar playlist\'s rank within genre is: {}'.format(rank))
+    return rank
     
 ```
 
 
+## Examples of Recommendation
+### Example 1: Recommend a playlist of 8 tracks under genre = `pop`
+
 
 
 ```python
-recommendation, recommendation_pred_num_followers = recommended_playlist('pop', 10)
-validate_recommendation_playlist(recommendation, recommendation_pred_num_followers)
+recommendation, recommendation_pred_num_followers = recommended_playlist('pop', 6)
+most_similar_pl_id = get_most_similar_playlist(recommendation, 'pop')
+predict_most_similar_playlist(most_similar_pl_id)
+rank = get_rank_within_genre(most_similar_pl_id, 'pop')
 ```
 
 
@@ -323,6 +370,7 @@ validate_recommendation_playlist(recommendation, recommendation_pred_num_followe
     <tr style="text-align: right;">
       <th></th>
       <th>artists names</th>
+      <th>track ID</th>
       <th>track name</th>
     </tr>
   </thead>
@@ -330,51 +378,147 @@ validate_recommendation_playlist(recommendation, recommendation_pred_num_followe
     <tr>
       <th>0</th>
       <td>[Camila Cabello, Young Thug]</td>
+      <td>0ofbQMrRDsUaVKq2mGLEAb</td>
       <td>Havana</td>
     </tr>
     <tr>
       <th>1</th>
       <td>[ZAYN, Sia]</td>
+      <td>1j4kHkkpqZRBwE0A4CN4Yv</td>
       <td>Dusk Till Dawn - Radio Edit</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>[Ed Sheeran]</td>
-      <td>Perfect</td>
+      <td>[Charlie Puth]</td>
+      <td>32DGGj6KlNuBr6WaqRxpxi</td>
+      <td>How Long</td>
     </tr>
     <tr>
       <th>3</th>
       <td>[Selena Gomez, Marshmello]</td>
+      <td>7EmGUiUaOSGDnUUQUDrOXC</td>
       <td>Wolves</td>
     </tr>
     <tr>
       <th>4</th>
       <td>[Becky G, Bad Bunny]</td>
+      <td>7JNh1cfm0eXjqFVOzKLyau</td>
       <td>Mayores</td>
     </tr>
     <tr>
       <th>5</th>
       <td>[Sam Smith]</td>
+      <td>1mXVgsBdtIVeCLJnSnmtdV</td>
+      <td>Too Good At Goodbyes</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+    Predicted num_followers: 11497.350942856436
+    The most similar playlist's predicted num_followers: 1299334.2394193185
+    There are 2738 playlists in genre = pop
+    The most similar playlist's rank within genre is: 596
+
+
+
+
+```python
+recommendation, recommendation_pred_num_followers = recommended_playlist('pop', 10)
+most_similar_pl_id = get_most_similar_playlist(recommendation, 'pop')
+predict_most_similar_playlist(most_similar_pl_id)
+rank = get_rank_within_genre(most_similar_pl_id, 'pop')
+```
+
+
+    tracks that are missing : 0
+    The recommended playlist is:
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>artists names</th>
+      <th>track ID</th>
+      <th>track name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>[Camila Cabello, Young Thug]</td>
+      <td>0ofbQMrRDsUaVKq2mGLEAb</td>
+      <td>Havana</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>[ZAYN, Sia]</td>
+      <td>1j4kHkkpqZRBwE0A4CN4Yv</td>
+      <td>Dusk Till Dawn - Radio Edit</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>[Ed Sheeran]</td>
+      <td>0tgVpDi06FyKpA1z0VMD4v</td>
+      <td>Perfect</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>[Selena Gomez, Marshmello]</td>
+      <td>7EmGUiUaOSGDnUUQUDrOXC</td>
+      <td>Wolves</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>[Becky G, Bad Bunny]</td>
+      <td>7JNh1cfm0eXjqFVOzKLyau</td>
+      <td>Mayores</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>[Sam Smith]</td>
+      <td>1mXVgsBdtIVeCLJnSnmtdV</td>
       <td>Too Good At Goodbyes</td>
     </tr>
     <tr>
       <th>6</th>
       <td>[Charlie Puth]</td>
+      <td>4iLqG9SeJSnt0cSPICSjxv</td>
       <td>Attention</td>
     </tr>
     <tr>
       <th>7</th>
       <td>[Ed Sheeran]</td>
+      <td>7qiZfU4dY1lWllzX7mPBI3</td>
       <td>Shape of You</td>
     </tr>
     <tr>
       <th>8</th>
       <td>[Maroon 5, SZA]</td>
+      <td>3hBBKuWJfxlIlnd9QFoC8k</td>
       <td>What Lovers Do (feat. SZA)</td>
     </tr>
     <tr>
       <th>9</th>
       <td>[Lauv]</td>
+      <td>1wjzFQodRWrPcQ0AnYnvQ9</td>
       <td>I Like Me Better</td>
     </tr>
   </tbody>
@@ -382,17 +526,19 @@ validate_recommendation_playlist(recommendation, recommendation_pred_num_followe
 </div>
 
 
-    min # different tracks: 2
-    
     Predicted num_followers: 14741.997686715062
-    The most similar playlist's num_followers: 12219.764844058263
+    The most similar playlist's predicted num_followers: 12219.764844058263
+    There are 2738 playlists in genre = pop
+    The most similar playlist's rank within genre is: 2240
 
 
 
 
 ```python
-recommendation, recommendation_pred_num_followers = recommended_playlist('rock', 12)
-validate_recommendation_playlist(recommendation, recommendation_pred_num_followers)
+recommendation, recommendation_pred_num_followers = recommended_playlist('pop', 12)
+most_similar_pl_id = get_most_similar_playlist(recommendation, 'pop')
+predict_most_similar_playlist(most_similar_pl_id)
+rank = get_rank_within_genre(most_similar_pl_id, 'pop')
 ```
 
 
@@ -420,6 +566,129 @@ validate_recommendation_playlist(recommendation, recommendation_pred_num_followe
     <tr style="text-align: right;">
       <th></th>
       <th>artists names</th>
+      <th>track ID</th>
+      <th>track name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>[Camila Cabello, Young Thug]</td>
+      <td>0ofbQMrRDsUaVKq2mGLEAb</td>
+      <td>Havana</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>[ZAYN, Sia]</td>
+      <td>1j4kHkkpqZRBwE0A4CN4Yv</td>
+      <td>Dusk Till Dawn - Radio Edit</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>[Ed Sheeran]</td>
+      <td>0tgVpDi06FyKpA1z0VMD4v</td>
+      <td>Perfect</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>[Dua Lipa]</td>
+      <td>2ekn2ttSfGqwhhate0LSR0</td>
+      <td>New Rules</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>[Charlie Puth]</td>
+      <td>32DGGj6KlNuBr6WaqRxpxi</td>
+      <td>How Long</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>[Selena Gomez, Marshmello]</td>
+      <td>7EmGUiUaOSGDnUUQUDrOXC</td>
+      <td>Wolves</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>[Becky G, Bad Bunny]</td>
+      <td>7JNh1cfm0eXjqFVOzKLyau</td>
+      <td>Mayores</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>[Sam Smith]</td>
+      <td>1mXVgsBdtIVeCLJnSnmtdV</td>
+      <td>Too Good At Goodbyes</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>[Charlie Puth]</td>
+      <td>4iLqG9SeJSnt0cSPICSjxv</td>
+      <td>Attention</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>[Maroon 5, SZA]</td>
+      <td>3hBBKuWJfxlIlnd9QFoC8k</td>
+      <td>What Lovers Do (feat. SZA)</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>[Lauv]</td>
+      <td>1wjzFQodRWrPcQ0AnYnvQ9</td>
+      <td>I Like Me Better</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>[Justin Bieber, BloodPop®]</td>
+      <td>7nZmah2llfvLDiUjm0kiyz</td>
+      <td>Friends (with BloodPop®)</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+    Predicted num_followers: 17795.27856902531
+    The most similar playlist's predicted num_followers: 202172073.55318552
+    There are 2738 playlists in genre = pop
+    The most similar playlist's rank within genre is: 23
+
+
+
+
+```python
+recommendation, recommendation_pred_num_followers = recommended_playlist('rock', 6)
+most_similar_pl_id = get_most_similar_playlist(recommendation, 'rock')
+predict_most_similar_playlist(most_similar_pl_id)
+rank = get_rank_within_genre(most_similar_pl_id, 'rock')
+```
+
+
+    tracks that are missing : 0
+    The recommended playlist is:
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>artists names</th>
+      <th>track ID</th>
       <th>track name</th>
     </tr>
   </thead>
@@ -427,61 +696,269 @@ validate_recommendation_playlist(recommendation, recommendation_pred_num_followe
     <tr>
       <th>0</th>
       <td>[Imagine Dragons]</td>
+      <td>0tKcYR2II1VCQWT79i5NrW</td>
       <td>Thunder</td>
     </tr>
     <tr>
       <th>1</th>
       <td>[Imagine Dragons]</td>
+      <td>5VnDkUNyX6u5Sk0yZiP8XB</td>
       <td>Thunder</td>
     </tr>
     <tr>
       <th>2</th>
       <td>[Imagine Dragons]</td>
+      <td>0CcQNd8CINkwQfe1RDtGV6</td>
       <td>Believer</td>
     </tr>
     <tr>
       <th>3</th>
       <td>[Imagine Dragons]</td>
+      <td>1NtIMM4N0cFa1dNzN15chl</td>
       <td>Believer</td>
     </tr>
     <tr>
       <th>4</th>
       <td>[Imagine Dragons]</td>
+      <td>4IWAyPf1KMq7JCyGeCjTeH</td>
       <td>Whatever It Takes</td>
     </tr>
     <tr>
       <th>5</th>
       <td>[Twenty One Pilots]</td>
+      <td>3CRDbSIZ4r5MsZ0YwxuEkn</td>
       <td>Stressed Out</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+    Predicted num_followers: 9612.629344915793
+    The most similar playlist's predicted num_followers: 18949928.261263046
+    There are 981 playlists in genre = rock
+    The most similar playlist's rank within genre is: 60
+
+
+
+
+```python
+recommendation, recommendation_pred_num_followers = recommended_playlist('rock', 10)
+most_similar_pl_id = get_most_similar_playlist(recommendation, 'rock')
+predict_most_similar_playlist(most_similar_pl_id)
+rank = get_rank_within_genre(most_similar_pl_id, 'rock')
+```
+
+
+    tracks that are missing : 0
+    The recommended playlist is:
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>artists names</th>
+      <th>track ID</th>
+      <th>track name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>[Imagine Dragons]</td>
+      <td>5VnDkUNyX6u5Sk0yZiP8XB</td>
+      <td>Thunder</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>[Imagine Dragons]</td>
+      <td>0CcQNd8CINkwQfe1RDtGV6</td>
+      <td>Believer</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>[Imagine Dragons]</td>
+      <td>4IWAyPf1KMq7JCyGeCjTeH</td>
+      <td>Whatever It Takes</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>[Twenty One Pilots]</td>
+      <td>3CRDbSIZ4r5MsZ0YwxuEkn</td>
+      <td>Stressed Out</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>[Eurythmics]</td>
+      <td>1TfqLAPs4K3s2rJMoCokcS</td>
+      <td>Sweet Dreams (Are Made of This) - Remastered</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>[a-ha]</td>
+      <td>2WfaOiMkCvy7F5fcp2zZ8L</td>
+      <td>Take On Me</td>
     </tr>
     <tr>
       <th>6</th>
       <td>[Twenty One Pilots]</td>
+      <td>6i0V12jOa3mr6uu4WYhUBr</td>
       <td>Heathens</td>
     </tr>
     <tr>
       <th>7</th>
       <td>[Twenty One Pilots]</td>
+      <td>2Z8WuEywRWYTKe1NybPQEW</td>
       <td>Ride</td>
     </tr>
     <tr>
       <th>8</th>
       <td>[AC/DC]</td>
+      <td>2zYzyRzz6pRmhPzyfMEC8s</td>
       <td>Highway to Hell</td>
     </tr>
     <tr>
       <th>9</th>
       <td>[Eagles]</td>
+      <td>40riOy7x9W7GXjyGp4pjAv</td>
+      <td>Hotel California - Remastered</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+    Predicted num_followers: 10451.662075669927
+    The most similar playlist's predicted num_followers: 1113.209291725653
+    There are 981 playlists in genre = rock
+    The most similar playlist's rank within genre is: 804
+
+
+
+
+```python
+recommendation, recommendation_pred_num_followers = recommended_playlist('rock', 12)
+most_similar_pl_id = get_most_similar_playlist(recommendation, 'rock')
+predict_most_similar_playlist(most_similar_pl_id)
+rank = get_rank_within_genre(most_similar_pl_id, 'rock')
+```
+
+
+    tracks that are missing : 0
+    The recommended playlist is:
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>artists names</th>
+      <th>track ID</th>
+      <th>track name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>[Imagine Dragons]</td>
+      <td>0tKcYR2II1VCQWT79i5NrW</td>
+      <td>Thunder</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>[Imagine Dragons]</td>
+      <td>5VnDkUNyX6u5Sk0yZiP8XB</td>
+      <td>Thunder</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>[Imagine Dragons]</td>
+      <td>0CcQNd8CINkwQfe1RDtGV6</td>
+      <td>Believer</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>[Imagine Dragons]</td>
+      <td>1NtIMM4N0cFa1dNzN15chl</td>
+      <td>Believer</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>[Imagine Dragons]</td>
+      <td>4IWAyPf1KMq7JCyGeCjTeH</td>
+      <td>Whatever It Takes</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>[Twenty One Pilots]</td>
+      <td>3CRDbSIZ4r5MsZ0YwxuEkn</td>
+      <td>Stressed Out</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>[Twenty One Pilots]</td>
+      <td>6i0V12jOa3mr6uu4WYhUBr</td>
+      <td>Heathens</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>[Twenty One Pilots]</td>
+      <td>2Z8WuEywRWYTKe1NybPQEW</td>
+      <td>Ride</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>[AC/DC]</td>
+      <td>2zYzyRzz6pRmhPzyfMEC8s</td>
+      <td>Highway to Hell</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>[Eagles]</td>
+      <td>40riOy7x9W7GXjyGp4pjAv</td>
       <td>Hotel California - Remastered</td>
     </tr>
     <tr>
       <th>10</th>
       <td>[Red Hot Chili Peppers]</td>
+      <td>3d9DChrdc6BOeFsbrZ3Is0</td>
       <td>Under The Bridge</td>
     </tr>
     <tr>
       <th>11</th>
       <td>[AC/DC]</td>
+      <td>08mG3Y1vljYA6bvDt4Wqkj</td>
       <td>Back In Black</td>
     </tr>
   </tbody>
@@ -489,17 +966,19 @@ validate_recommendation_playlist(recommendation, recommendation_pred_num_followe
 </div>
 
 
-    min # different tracks: 7
-    
     Predicted num_followers: 14808.540723599252
-    The most similar playlist's num_followers: 302338.3862527031
+    The most similar playlist's predicted num_followers: 6894626.190676659
+    There are 981 playlists in genre = rock
+    The most similar playlist's rank within genre is: 115
 
 
 
 
 ```python
-recommendation, recommendation_pred_num_followers = recommended_playlist('jazz', 1)
-validate_recommendation_playlist(recommendation, recommendation_pred_num_followers)
+recommendation, recommendation_pred_num_followers = recommended_playlist('funk', 6)
+most_similar_pl_id = get_most_similar_playlist(recommendation, 'funk')
+predict_most_similar_playlist(most_similar_pl_id)
+rank = get_rank_within_genre(most_similar_pl_id, 'funk')
 ```
 
 
@@ -527,22 +1006,61 @@ validate_recommendation_playlist(recommendation, recommendation_pred_num_followe
     <tr style="text-align: right;">
       <th></th>
       <th>artists names</th>
+      <th>track ID</th>
       <th>track name</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>[The Cinematic Orchestra, Patrick Watson]</td>
-      <td>To Build A Home</td>
+      <td>[MC Jhowzinho e MC Kadinho]</td>
+      <td>0pDaqgIForVNO4jrtTxcWT</td>
+      <td>Agora Vai Sentar</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>[1Kilo, Baviera, Pablo Martins, Knust]</td>
+      <td>2srL4DYBekshpbprS6H0mO</td>
+      <td>Deixe Me Ir - Acústico</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>[Mc Livinho]</td>
+      <td>6pSYjx66rlqRmGGTHhnjCo</td>
+      <td>Fazer Falta</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>[MC Kevinho, Leo Santana]</td>
+      <td>7yYOMPwpV5CsK0cxoAZT6B</td>
+      <td>Encaixa</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>[MC G15]</td>
+      <td>4BjPsq3MXBNo4Qxg40igEr</td>
+      <td>Cara Bacana</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>[Mc Don Juan]</td>
+      <td>1kNVJQEkobOlyfbctPZ4fs</td>
+      <td>Amar Amei</td>
     </tr>
   </tbody>
 </table>
 </div>
 
 
-    min # different tracks: 0
-    
-    Predicted num_followers: 27894.382630047396
-    The most similar playlist's num_followers: 37845.34328748115
+    Predicted num_followers: 75942.19733322992
+    The most similar playlist's predicted num_followers: 899363319.2529154
+    There are 66 playlists in genre = funk
+    The most similar playlist's rank within genre is: 1
+
+
+
+
+```python
+
+```
 
