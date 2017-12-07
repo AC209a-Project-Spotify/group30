@@ -58,7 +58,7 @@ The data attributes we obtained from **Spotify API** is given below:
   - Popularity
 
     ​
-The data attributes we obtained from **Worldwide Daily Song Ranking** is given below:
+    The data attributes we obtained from **Worldwide Daily Song Ranking** is given below:
 
 - Position (Ranking)
 - Track ID
@@ -81,6 +81,8 @@ For Spotify data, we first extracted track features for each playlist and perfor
 For the additional dataset, we engineered an additional field, **`score`** based on the rank of a song each time it made the top 200 most streamed list worldwide. Our definition is **`Score`** = (201 - rank_1) + … + (201 - rank_N), where N is the number of times the song made the top 200 list. We then appended the ranking scores to Spotify playlist dataframe by matching track IDs. 
 
 See the diagram below for a visualization of our workflow.
+
+![preprocess_diagram](img/preprocessing_process.png)
 
 ### Model building & validation
 Using our model building process depicted in the diagram below, we explored 16 different models and compared their performance based on their test $R^2$ scores. The models were built by:
