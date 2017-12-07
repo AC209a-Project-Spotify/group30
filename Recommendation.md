@@ -28,7 +28,7 @@ notebook: Recommendation.ipynb
     - Low rank within genre indicates a **poor** recommendation
 
 **Summary of findings:**
-We find that the meta linear regression model has a good validation result when the user specified genre is `pop`, the genre that most playlists are associated with. The validation result would be off when the user specified genre is a genre that does not often appear in the playlists. This suggests that future work to improve recommendation is to gather balanced number of playlists/tracks among all genres.
+We found the performance of our recommender system varies significantly (i.e. the within genre ranking of the most similar playlist is fairly unstable) as shown in the 3 examples above. This variance could be due to 1) the model predicting the number of followers does not have sufficient predictive power or 2) our metric of similarity is not sufficient to actually find a very similar playlist in the existing pool of playlists. We suspect both reasons contributed to the variance in performance we observed. In the next section, we discuss some potential future directions to improve our recommender system performance.
 
 
 
