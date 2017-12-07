@@ -334,7 +334,6 @@ def get_rank_within_genre(playlist_id, genre):
 
 
 ## Examples of Recommendation
-### Example 1: Recommend a playlist of 8 tracks under genre = `pop`
 
 
 
