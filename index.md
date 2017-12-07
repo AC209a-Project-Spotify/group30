@@ -104,7 +104,7 @@ Using our model building process depicted in the diagram below, we explored 16 d
 - Training meta-models by **Stacking** all fitted models on the training set together to fit a    
   - **Meta regressor 1**: Average each single model's predicted value weighted by its accuracy on the validation set    
   - **Meta regressor 2**: Fit a linear regression model on the single models' predicted values on the validation set
-<img src="img/model_building_process.png" width="400">
+    <p align="center"><img src="img/model_building_process.png" width="400"> </p>
 
 ### Recommender system & validation
 
@@ -112,7 +112,7 @@ Our recommender system allows the user to input the desired genre and length of 
 
 See diagram below for our workflow.
 
-<img src="img/recommendation_process.png" width="400">
+<p align="center"><img src="img/recommendation_process.png" width="400"> </p>
 
 
 
