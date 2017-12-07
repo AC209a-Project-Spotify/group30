@@ -25,11 +25,11 @@ For each set of features, do the following 2 steps:
     - Adaboost Regressor
 
 - **Stack** all fitted models on the training set together to fit a
-    - **Meta regressor 1: Weighted Average ** 
+    - **Meta regressor 1: Weighted Average** 
         - Gather the predicted values of all the fitted single models on the validation set
         - Average each single model's predicted value weighted by its accuracy on the same validation set
     
-    - **Meta regressor 2: Meta Linear Regressor ** 
+    - **Meta regressor 2: Meta Linear Regressor** 
         - Gather the predicted values of all the fitted single models on the validation set
         - Fit a linear regression model on these single models' predicted values
 
