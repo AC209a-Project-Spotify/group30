@@ -38,13 +38,6 @@ nav a.active{
   background-color: #2879d0;
 }
 
-.recommendation-table{
-  width: 100%;
-  display: table;
-  //border: 1px solid #ebebeb;
-  //border-collapse: collapse;
-  //border-spacing: 0;
-}
 
 
 /* LAYOUT STYLES */
@@ -236,6 +229,13 @@ form {
 
 }
 
+table.recommendation-table{
+  width: 100%;
+  display: table;
+  border: 1px solid #ebebeb;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
 
 /* GENERAL ELEMENT TYPE STYLES */
 
