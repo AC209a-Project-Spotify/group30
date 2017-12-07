@@ -364,7 +364,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'pop')
         vertical-align: top;
     }
 </style>
-<table border="1" class="dataframe">
+<table border="1" class="dataframe recommendation-table">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -450,7 +450,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'pop')
         vertical-align: top;
     }
 </style>
-<table border="1" class="dataframe">
+<table border="1" class="dataframe recommendation-table">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -560,7 +560,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'pop')
         vertical-align: top;
     }
 </style>
-<table border="1" class="dataframe">
+<table border="1" class="dataframe recommendation-table">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -681,8 +681,8 @@ rank = get_rank_within_genre(most_similar_pl_id, 'rock')
     .dataframe tbody tr th {
         vertical-align: top;
     }
-</style>
-<table border="1" class="dataframe">
+</style> 
+<table border="1" class="dataframe recommendation-table">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -768,7 +768,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'rock')
         vertical-align: top;
     }
 </style>
-<table border="1" class="dataframe">
+<table border="1" class="dataframe recommendation-table">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -878,7 +878,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'rock')
         vertical-align: top;
     }
 </style>
-<table border="1" class="dataframe">
+<table border="1" class="dataframe recommendation-table">
   <thead>
     <tr style="text-align: right;">
       <th></th>
@@ -1000,7 +1000,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'funk')
         vertical-align: top;
     }
 </style>
-<table border="1" class="dataframe">
+<table border="1" class="dataframe recommendation-table">
   <thead>
     <tr style="text-align: right;">
       <th></th>
