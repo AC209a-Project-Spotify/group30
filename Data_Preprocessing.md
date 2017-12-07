@@ -220,7 +220,7 @@ playlists_df.head()
 <div>
 <style>
     .dataframe thead tr:only-child th {
-        text-align: right;
+        text-align: cneter;
     }
 
     .dataframe thead th {
@@ -233,7 +233,7 @@ playlists_df.head()
 </style>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr style="text-align: center;">
       <th></th>
       <th>collaborative</th>
       <th>id</th>
@@ -425,7 +425,7 @@ tracks_df.head()
 <div>
 <style>
     .dataframe thead tr:only-child th {
-        text-align: right;
+        text-align: center;
     }
 
     .dataframe thead th {
@@ -438,7 +438,7 @@ tracks_df.head()
 </style>
 <table border="1" class="dataframe">
   <thead>
-    <tr style="text-align: right;">
+    <tr style="text-align: center;">
       <th></th>
       <th>trackID</th>
       <th>acousticness</th>
