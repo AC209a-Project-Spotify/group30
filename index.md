@@ -33,37 +33,24 @@ The data attributes we obtained from **Spotify API** is given below:
 - Track-level attributes:    
 
   - Track name    
-
   - Track ID   
-
   - Track ISRC ID    
-
   - Artist names    
-
   - Artist IDs   
-
   - Artist genres  
-
   - Artist popularities    
-
   - Artist number of followers    
-
   - Album name    
-
   - Album ID   
-
   - Album popularity    
-
   - Audio features (danceability, energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration, time signature)    
-
-  -  Whether lyrics is explicit    
-
+  - Whether lyrics is explicit    
   - Number of available markets   
-
   - Popularity
 
-    ​
-    The data attributes we obtained from **Worldwide Daily Song Ranking** is given below:
+
+
+The data attributes we obtained from **Worldwide Daily Song Ranking** is given below:
 
 - Position (Ranking)
 - Track ID
