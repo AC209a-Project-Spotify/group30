@@ -353,7 +353,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'pop')
 <div>
 <style>
     .dataframe thead tr:only-child th {
-        text-align: right;
+        text-align: center;
     }
 
     .dataframe thead th {
@@ -366,7 +366,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'pop')
 </style>
 <table border="1" class="dataframe custom-table">
   <thead>
-    <tr style="text-align: right;">
+    <tr style="text-align: center;">
       <th></th>
       <th>artists names</th>
       <th>track ID</th>
@@ -439,7 +439,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'pop')
 <div>
 <style>
     .dataframe thead tr:only-child th {
-        text-align: right;
+        text-align: center;
     }
 
     .dataframe thead th {
@@ -452,7 +452,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'pop')
 </style>
 <table border="1" class="dataframe custom-table">
   <thead>
-    <tr style="text-align: right;">
+    <tr style="text-align: center;">
       <th></th>
       <th>artists names</th>
       <th>track ID</th>
@@ -549,7 +549,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'pop')
 <div>
 <style>
     .dataframe thead tr:only-child th {
-        text-align: right;
+        text-align: center;
     }
 
     .dataframe thead th {
@@ -562,7 +562,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'pop')
 </style>
 <table border="1" class="dataframe custom-table">
   <thead>
-    <tr style="text-align: right;">
+    <tr style="text-align: center;">
       <th></th>
       <th>artists names</th>
       <th>track ID</th>
@@ -671,7 +671,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'rock')
 <div>
 <style>
     .dataframe thead tr:only-child th {
-        text-align: right;
+        text-align: center;
     }
 
     .dataframe thead th {
@@ -684,7 +684,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'rock')
 </style> 
 <table border="1" class="dataframe custom-table">
   <thead>
-    <tr style="text-align: right;">
+    <tr style="text-align: center;">
       <th></th>
       <th>artists names</th>
       <th>track ID</th>
@@ -757,7 +757,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'rock')
 <div>
 <style>
     .dataframe thead tr:only-child th {
-        text-align: right;
+        text-align: center;
     }
 
     .dataframe thead th {
@@ -770,7 +770,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'rock')
 </style>
 <table border="1" class="dataframe custom-table">
   <thead>
-    <tr style="text-align: right;">
+    <tr style="text-align: center;">
       <th></th>
       <th>artists names</th>
       <th>track ID</th>
@@ -867,7 +867,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'rock')
 <div>
 <style>
     .dataframe thead tr:only-child th {
-        text-align: right;
+        text-align: center;
     }
 
     .dataframe thead th {
@@ -880,7 +880,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'rock')
 </style>
 <table border="1" class="dataframe custom-table">
   <thead>
-    <tr style="text-align: right;">
+    <tr style="text-align: center;">
       <th></th>
       <th>artists names</th>
       <th>track ID</th>
@@ -989,7 +989,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'funk')
 <div>
 <style>
     .dataframe thead tr:only-child th {
-        text-align: right;
+        text-align: center;
     }
 
     .dataframe thead th {
@@ -1002,7 +1002,7 @@ rank = get_rank_within_genre(most_similar_pl_id, 'funk')
 </style>
 <table border="1" class="dataframe custom-table">
   <thead>
-    <tr style="text-align: right;">
+    <tr style="text-align: center;">
       <th></th>
       <th>artists names</th>
       <th>track ID</th>

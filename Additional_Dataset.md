@@ -228,7 +228,7 @@ extra_df.head()
 <div>
 <style>
     .dataframe thead tr:only-child th {
-        text-align: right;
+        text-align: center;
     }
 
     .dataframe thead th {
@@ -241,7 +241,7 @@ extra_df.head()
 </style>
 <table border="1" class="dataframe custom-table">
   <thead>
-    <tr style="text-align: right;">
+    <tr style="text-align: center;">
       <th></th>
       <th>Track_ID</th>
       <th>Score</th>
